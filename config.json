@@ -1,0 +1,8 @@
+{
+    "app_name": "Express Clean",
+    "port": 8080,
+    "db": {
+        "type": "sqlite",
+        "database": "db.sqlite"
+    }
+}

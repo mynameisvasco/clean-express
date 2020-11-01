@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["es6"],
+    "types": ["reflect-metadata", "node", "typescript"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "baseUrl": "./src/",
+    "outDir": "build",
+    "sourceMap": true,
+    "paths": {
+      "@Domain/*": ["./Domain/*"],
+      "@Application/*": ["./Application/*"],
+      "@Infrastructure/*": ["./Infrastructure/*"],
+      "@Api/*": ["./Api/*"]
+    }
+  },
+  "compileOnSave": true,
+  "include": ["src/**/*"],
+  "exclude": ["build/**/*", "node_modules"]
+}
