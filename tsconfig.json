@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["es6"],
+    "typeRoots": ["@types", "./node_modules/@types"],
     "types": ["reflect-metadata", "node", "typescript"],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -16,10 +17,11 @@
       "@Domain/*": ["./Domain/*"],
       "@Application/*": ["./Application/*"],
       "@Infrastructure/*": ["./Infrastructure/*"],
-      "@Api/*": ["./Api/*"]
+      "@Api/*": ["./Api/*"],
+      "@Lib/*": ["../lib/*"]
     }
   },
   "compileOnSave": true,
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "lib/**/*", "@types/**/*"],
   "exclude": ["build/**/*", "node_modules"]
 }

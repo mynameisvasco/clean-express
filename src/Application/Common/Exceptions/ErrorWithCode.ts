@@ -1,19 +1,13 @@
-export default abstract class AbstractEx extends Error {
+class ErrorWithCode extends Error {
   private _code: number;
-  private _raiser: object;
 
-  public constructor(message: string, code: number, raiser: object) {
+  public constructor(message: string, code: number) {
     super(message);
     this._code = code;
-    this._raiser = raiser;
   }
 
   public get code(): number {
     return this._code;
-  }
-
-  public get raiser(): object {
-    return this._raiser;
   }
 
   public toJson() {
@@ -24,3 +18,5 @@ export default abstract class AbstractEx extends Error {
     };
   }
 }
+
+export default ErrorWithCode;

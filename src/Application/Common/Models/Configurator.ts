@@ -1,9 +1,7 @@
 import { readFileSync } from "fs";
 import "reflect-metadata";
-import { autoInjectable } from "tsyringe";
 
-@autoInjectable()
-export default class Configurator {
+class Configurator {
   private _config: any = {};
 
   public constructor() {
@@ -11,7 +9,13 @@ export default class Configurator {
     this._config = JSON.parse(file);
   }
 
-  public get(key: string) {
-    return this._config[key];
+  public get<T>(key: string) {
+    let value = this._config;
+    key.split(".").forEach((k) => {
+      value = value[k];
+    });
+    return value as T;
   }
 }
+
+export default Configurator;

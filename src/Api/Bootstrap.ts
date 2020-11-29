@@ -1,7 +1,7 @@
+import Http from "@Api/Http/Http";
+import { getControllerInfo } from "@Lib/ExpressDecorators";
 import { glob } from "glob";
 import { container } from "tsyringe";
-import Http from "./Http/Http";
-import AbstractController from "./Http/Models/AbstractController";
 
 function resolveControllers() {
   const controllers: any[] = [];
@@ -11,35 +11,37 @@ function resolveControllers() {
       .replace(".ts", "")
       .replace("./src/", "")
       .replace("Api", "@Api");
-    controllers.push(require(controllerPath).default);
+    const controller = require(controllerPath).default;
+    if (controller.name !== "Controller") {
+      controllers.push(controller);
+    }
   });
   return controllers;
 }
 
-function resolveMiddlewares() {
-  const middlewares: any[] = [];
-  const middlewarePaths = glob.sync("./src/Api/Http/Middleware/*.ts");
-  middlewarePaths.forEach((m) => {
-    const middlewarePath = m
-      .replace(".ts", "")
-      .replace("./src/", "")
-      .replace("Api", "@Api");
-    middlewares.push(require(middlewarePath).default);
-  });
-  return middlewares;
-}
-
-export function register() {
+function register() {
   const controllers = resolveControllers();
-  const middlewares = resolveMiddlewares();
   container.registerSingleton(Http);
-  middlewares.forEach((m) => container.registerSingleton(m));
-  controllers.forEach((c) => {
-    container.registerSingleton(c);
-    (container.resolve(c) as AbstractController).register();
-  });
+  controllers.forEach((c) => container.registerSingleton("Controller", c));
 }
 
-export function init() {
-  container.resolve(Http).init();
+function init() {
+  const http = container.resolve(Http);
+  container.resolveAll<any>("Controller").forEach((c) => {
+    const controller = getControllerInfo(c);
+    controller.middleware.forEach((m) => {
+      controller.router.use(m.handle);
+    });
+    for (var route of controller.routes) {
+      route.middleware.forEach((m) => controller.router.use(m.handle));
+      (controller.router as any)[route.method](
+        `/${controller.baseUrl}/${route.url}`,
+        route.handler
+      );
+    }
+    http.addRouter(controller.router);
+  });
+  http.init();
 }
+
+export { register, init };

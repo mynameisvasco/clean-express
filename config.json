@@ -1,8 +1,20 @@
 {
     "app_name": "Express Clean",
     "port": 8080,
+    "mode": "debug",
     "db": {
         "type": "sqlite",
-        "database": "db.sqlite"
+        "name": "db.sqlite",
+        "entities": ["./src/Domain/Entities/*.ts"],
+        "migrations": ["./src/Infrastructure/Persistence/Migrations/*.ts"],
+        "cli": {
+            "entitiesDir": "./src/Domain/Entities/",
+            "migrationsDir": "./src/Infrastructure/Persistence/Migrations/"
+        }
+    },
+    "jwt": {
+        "secret": "qP4_0Giil-E4HqbmowRpdVh-oJ2rt6NJsdrCsH39KiYQB3kTuHp48clseRlUU1oPNjwTqhIuNmFTS1IGDy3yyzLpezfAjhWUwnC_Trny488yLWoCvzRF-bLE6X6OMaDyE061IzRYhLQU_8oYcI96fKmzl0kJK_ySZcW1_VlJrnL3nz-eVo3XM1bsy1dGw7SzcRQO0o8HXXuL2cqTX9oos66Ue_oXn13pdTPnpJED36_k0_CtEFhAB_rKtjHL-kkQz7X0iAGyhklxy3z4QMVkRV8EI5QfBN_75PDN1IbEu2GVqt0a7OQRDxMS752pFzxFHeOY3SKr9UYZ4eRZix9ifw",
+        "expiresIn": "7d",
+        "algorithm": "HS256"
     }
 }

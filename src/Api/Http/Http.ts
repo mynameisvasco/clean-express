@@ -1,12 +1,12 @@
-import Configurator from "@Application/Configurator";
-import express, { Express } from "express";
+import exceptionHandler from "@Api/Http/Exceptions/ExHandler";
+import Configurator from "@Application/Common/Models/Configurator";
+import express, { Express, Router } from "express";
 import { autoInjectable } from "tsyringe";
-import exceptionHandler from "./Exceptions/ExHandler";
 
 @autoInjectable()
-export default class Http {
-  protected readonly _configurator?: Configurator;
+class Http {
   private readonly _app: Express;
+  private readonly _configurator: Configurator;
 
   constructor(configurator: Configurator) {
     this._app = express();
@@ -15,8 +15,6 @@ export default class Http {
     this._configurator = configurator;
   }
 
-  public register() {}
-
   public init() {
     this._app.use(exceptionHandler);
     this._app.listen(this._configurator.get("port") ?? 8080, () => {
@@ -24,7 +22,9 @@ export default class Http {
     });
   }
 
-  public get app() {
-    return this._app;
+  public addRouter(router: Router) {
+    this._app.use(router);
   }
 }
+
+export default Http;

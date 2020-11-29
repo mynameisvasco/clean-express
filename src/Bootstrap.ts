@@ -9,10 +9,10 @@ import {
   register as registerInfrastructure,
 } from "@Infrastructure/Bootstrap";
 
-registerApi();
-registerApplication();
 registerInfrastructure();
+registerApplication();
+registerApi();
 
-initApi();
-initApplication();
 initInfrastrucutre();
+initApplication();
+initApi();

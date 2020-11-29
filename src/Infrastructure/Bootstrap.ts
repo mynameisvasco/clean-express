@@ -1,14 +1,16 @@
 import IDatabaseService from "@Application/Common/Interfaces/IDatabaseService";
+import DatabaseService from "@Infrastructure/Persistence/DatabaseService";
 import { container } from "tsyringe";
-import DatabaseService from "./Persistence/DatabaseService";
 
-export function register() {
+function register() {
   container.registerSingleton<IDatabaseService>(
-    "DatabaseService",
+    "IDatabaseService",
     DatabaseService
   );
 }
 
-export function init() {
-  container.resolve<IDatabaseService>("DatabaseService").init();
+function init() {
+  container.resolve<IDatabaseService>("IDatabaseService").init();
 }
+
+export { register, init };
